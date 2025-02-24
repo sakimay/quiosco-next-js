@@ -5,6 +5,8 @@ import { Product } from '@prisma/client'
 type Store = {
     order: OrderItem[]
     addToCart: (product: Product) => void
+    increaseQuantity: (id: Product['id']) => void
+    decreaseQuantity: (id: Product['id']) => void
 }
 
 export const useStore = create<Store>((set, get) => ({
@@ -34,5 +36,23 @@ export const useStore = create<Store>((set, get) => ({
         }))
 
 
+    },
+    increaseQuantity: (id) => {
+        set((state) => ({
+            order: state.order.map(item => item.id === id ? {
+                ...item,
+                quantity: item.quantity + 1,
+                subtotal: (item.quantity + 1) * item.price
+            } : item)
+        }))
+    },
+    decreaseQuantity: (id) => {
+        set((state) => ({
+            order: state.order.map(item => item.id === id ? {
+                ...item,
+                quantity: item.quantity - 1,
+                subtotal: (item.quantity - 1) * item.price
+            } : item)
+        }))
     }
 })) 
