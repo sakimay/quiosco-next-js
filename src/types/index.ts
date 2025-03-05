@@ -9,5 +9,4 @@ export type OrderWithProducts = Order & {
     orderProducts: (OrderProducts & { 
         product: Product 
     })[]
-
 }
